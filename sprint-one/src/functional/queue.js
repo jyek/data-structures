@@ -1,18 +1,25 @@
 var makeQueue = function(){
   var instance = {};
-
-  // Use an object with numeric keys to store values
   var storage = {};
-
-  // Implement the methods below
+	var size = 0;
 
   instance.enqueue = function(value){
+		storage[size++] = value;
   };
 
   instance.dequeue = function(){
+		if (size > 0){
+			var result = storage[0];
+			for (var i = 0; i < size-1; i++){
+				storage[i] = storage[i+1];
+			}
+			size--;
+			return result;
+		}
   };
 
   instance.size = function(){
+		return size;
   };
 
   return instance;
