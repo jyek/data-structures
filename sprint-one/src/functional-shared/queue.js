@@ -1,15 +1,13 @@
 var makeQueue = function(){
-	var makeQueue = function(){
-	  var instance = {};
-	  var storage = {};
-		var size = 0;
+  var instance = {};
+  var storage = {};
+	var size = 0;
 
-	  instance.enqueue = queueMethods.enqueue;
-	  instance.dequeue = queueMethods.dequeue;
-		instance.size = queueMethods.size;
+  instance.enqueue = queueMethods.enqueue;
+  instance.dequeue = queueMethods.dequeue;
+	instance.size = queueMethods.size.apply(this,size);
 
-	  return instance;
-	};
+  return instance;
 };
 
 var queueMethods = {
@@ -26,7 +24,7 @@ var queueMethods = {
 			return result;
 		}
   },
-  size: function(){
+  size: function(size){
 		return size;
-  };
+  }
 };
