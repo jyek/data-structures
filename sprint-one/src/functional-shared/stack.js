@@ -1,33 +1,27 @@
 var makeStack = function(){
   var instance = {};
-  var storage = {};
-  var size = 0;
-	
-	// _.extend(instance, stackMethods);
-	
-	// instance.push = stackMethods.push;
-	// instance.pop = stackMethods.pop;
-	// instance.size = wrap(stackMethods.size, this);
-
+  instance.storage = {};
+  instance.len=0;
+  _.extend(instance,stackMethods);
   return instance;
 };
 
-var stackMethods = {
-	push: function(value){
-		this.storage[this.size++] = value;
-  },
-	pop: function(){
-		if(this.size > 0){
-			var this.result = this.storage[--this.size];
-			this.storage[this.size] = undefined;
-			return this.result;
-		}
-  },
-	size: function(){
-		return this.size;
-  }
-}
+var stackMethods = {};
 
-// tests
-c = makeStack();
-c.size();
+stackMethods.push = function(value){
+  this.storage[this.len++]=value;
+};
+
+stackMethods.pop = function(){
+  if (this.len===0){
+    return null;
+  }
+  var result = this.storage[this.len-1];
+  delete this.storage[this.len-1];
+  this.len--;
+  return result;
+};
+
+stackMethods.size = function(){
+  return this.len;
+};
