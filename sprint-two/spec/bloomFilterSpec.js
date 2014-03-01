@@ -1,47 +1,54 @@
 var expect = chai.expect;
 var assert = chai.assert;
 
-describe("tree", function() {
-  var tree;
+describe("bloom filter", function() {
+  var bf;
 
   beforeEach(function() {
-    tree = makeTree();
+    bf = new BloomFilter(10000, 3);
   });
 
-  it("should have methods named 'addChild' and 'contains', and a property named 'value'", function() {
-    expect(tree.addChild).to.be.a('function');
-    expect(tree.contains).to.be.a('function');
-    assert.isTrue('value' in tree);
+  it("should contain add, contains, count and 3 hash methods as well as a storage array", function() {
+    expect(bf.add).to.be.a('function');
+    expect(bf.contains).to.be.a('function');
+    expect(bf.count).to.be.a('function');
+    expect(bf.hash[0]).to.be.a('function');
+    expect(bf.hash[1]).to.be.a('function');
+    expect(bf.hash[2]).to.be.a('function');		
   });
 
-  it("should add children to the tree", function() {
-    tree.addChild(5);
-    expect(tree.children[0].value).to.equal(5);
+  it("should add items and indicate that they exist", function(){
+    bf.add('the');
+    bf.add('quick');
+    bf.add('brown');
+    bf.add('fox');
+    bf.add('lazy');
+    bf.add('dog');
+    assert.isTrue(bf.contains('the'));
+    assert.isTrue(bf.contains('quick'));
+    assert.isTrue(bf.contains('brown'));
+    assert.isTrue(bf.contains('fox'));
   });
 
-  it("should return true for a value that the tree contains", function(){
-    tree.addChild(5);
-    assert.isTrue(tree.contains(5));
-  });
+  it("should return number of items", function(){
+    bf.add('the');
+    bf.add('quick');
+    bf.add('brown');
+    bf.add('fox');
+    assert(bf.count(),4);
+  });  
 
-  it("should return false for a value that was not added", function(){
-    tree.addChild(5);
-    assert.isFalse(tree.contains(6));
+  it("should have false positive of less than 10%", function() {
+    var sample = 1000;
+    var falsePos = 0;
+    for (var i = 0; i < sample; i++){
+      bf.add('i');
+    }
+    for (var i = 0; i < sample; i++){
+      if ( bf.contains(sample+i) ){
+        falsePos++;
+      }
+    }
+    assert.isTrue(falsePos/sample < 0.1);
   });
-
-  it("should be able to add children to a tree's child", function() {
-    tree.addChild(5);
-    tree.children[0].addChild(6);
-    expect(tree.children[0].children[0].value).to.equal(6);
-  });
-
-  it("should correctly detect nested children", function(){
-    tree.addChild(5);
-    tree.addChild(6);
-    tree.children[0].addChild(7);
-    tree.children[1].addChild(8);
-    assert.isTrue(tree.contains(7));
-    assert.isTrue(tree.contains(8));
-  });
-
 });
