@@ -14,7 +14,7 @@ describe("tree", function() {
     assert.isTrue('value' in tree);
   });
 
-  it("should add children to the tree and add parent to child", 
+  it("should add children to the tree and add parent to child", function(){
     tree.addChild(5);
     expect(tree.children[0].value).to.equal(5);
     expect(tree.children[0].parent.value).to.equal(tree.value);
@@ -45,7 +45,7 @@ describe("tree", function() {
     assert.isTrue(tree.contains(8));
   });
 
-it("should remove parent when child is removed", function(){
+  it("should remove parent when child is removed", function(){
     tree.addChild(5);
     tree.addChild(4);
     t = tree.children[0];

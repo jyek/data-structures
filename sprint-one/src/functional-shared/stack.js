@@ -1,7 +1,7 @@
 var makeStack = function(){
   var instance = {};
-  instance.storage = {};
-  instance.len = 0;
+  instance._storage = {};
+  instance._len = 0;
   _.extend(instance, stackMethods);
   return instance;
 };
@@ -9,19 +9,19 @@ var makeStack = function(){
 var stackMethods = {};
 
 stackMethods.push = function(val){
-  this.storage[this.len++] = val;
+  this._storage[this._len++] = val;
 };
 
 stackMethods.pop = function(){
-  if (this.len === 0){
+  if (this._len === 0){
     return null;
   }
-  var result = this.storage[this.len - 1];
-  delete this.storage[this.len - 1];
-  this.len--;
+  var result = this._storage[this._len - 1];
+  delete this._storage[this._len - 1];
+  this._len--;
   return result;
 };
 
 stackMethods.size = function(){
-  return this.len;
+  return this._len;
 };

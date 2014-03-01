@@ -1,7 +1,7 @@
 var expect = chai.expect;
 var assert = chai.assert;
 
-describe("bloom filter", function() {
+describe("bloomFilter", function() {
   var bf;
 
   beforeEach(function() {
@@ -14,7 +14,7 @@ describe("bloom filter", function() {
     expect(bf.count).to.be.a('function');
     expect(bf.hash[0]).to.be.a('function');
     expect(bf.hash[1]).to.be.a('function');
-    expect(bf.hash[2]).to.be.a('function');		
+    expect(bf.hash[2]).to.be.a('function');
   });
 
   it("should add items and indicate that they exist", function(){
@@ -36,9 +36,9 @@ describe("bloom filter", function() {
     bf.add('brown');
     bf.add('fox');
     bf.add('jumps');
-    brownf.add('over');
+    bf.add('over');
     assert(bf.count(),6);
-  });  
+  });
 
   it("should have false positive of less than 10%", function() {
     var sample = 1000;

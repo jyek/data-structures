@@ -3,33 +3,27 @@ var makeBinarySearchTree = function(value){
   newTree.value = value;
   newTree.left = null;
   newTree.right = null;
-  newTree.parent = null;
   _.extend(newTree,binaryTreeMethods);
   return newTree;
 };
 
 var binaryTreeMethods = {};
 
-binaryTreeMethods.insert = function(value){
-  var child = makeBinarySearchTree(value);
-  var goToBottom = function(value, child, tree){
-    if (value > tree.value){
-      if (tree.right === null){
-        tree.right = child;
-        child.parent = tree;
-      } else {
-        goToBottom(value, child, tree.right);
-      }
+binaryTreeMethods.insert = function(value, tree){
+  tree = tree || this;
+  if (value > tree.value){
+    if (tree.right === null){
+      tree.right = new makeBinarySearchTree(value);
     } else {
-      if (tree.left === null) {
-        tree.left = child;
-        child.parent = tree;
-      } else {
-        goToBottom(value, child, tree.left);
-      }
+      tree.insert(value, tree.right);
     }
-  };
-  goToBottom(value, child, this);
+  } else {
+    if (tree.left === null) {
+      tree.left = new makeBinarySearchTree(value);
+    } else {
+      tree.insert(value, tree.left);
+    }
+  }
 };
 
 binaryTreeMethods.contains = function(target){
@@ -50,6 +44,10 @@ binaryTreeMethods.contains = function(target){
 
 binaryTreeMethods.depthFirstLog = function(callback){
   callback(this.value);
-  this.left !== null && this.left.depthFirstLog(callback);  
+  this.left !== null && this.left.depthFirstLog(callback);
   this.right !== null && this.right.depthFirstLog(callback);
+}
+
+binaryTreeMethods.breadthFirstLog = function(callback){
+
 }
