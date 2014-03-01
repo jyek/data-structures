@@ -1,4 +1,4 @@
-var makeTree = function(value){
+ var makeTree = function(value){
   var newTree = {};
   newTree.value = value;
   newTree.children = [];
@@ -15,16 +15,15 @@ treeMethods.addChild = function(value){
 
 treeMethods.contains = function(target, tree){
   tree = tree || this;
-  var found = false;
   if (tree.value === target){
-    found = true;
+    return true;
   } else {
     for (var i=0; i<tree.children.length; i++){
       result = this.contains(target, tree.children[i]);
       if (result){
-        found = true;
+        return true;
       }
     }
   }
-  return found;
+  return false;
 };
