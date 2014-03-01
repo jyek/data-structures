@@ -36,7 +36,7 @@ describe("bloom filter", function() {
     bf.add('brown');
     bf.add('fox');
     bf.add('jumps');
-    bf.add('over');
+    brownf.add('over');
     assert(bf.count(),6);
   });  
 
