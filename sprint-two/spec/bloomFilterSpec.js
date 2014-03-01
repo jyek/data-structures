@@ -35,7 +35,9 @@ describe("bloom filter", function() {
     bf.add('quick');
     bf.add('brown');
     bf.add('fox');
-    assert(bf.count(),4);
+    bf.add('jumps');
+    bf.add('over');
+    assert(bf.count(),6);
   });  
 
   it("should have false positive of less than 10%", function() {
@@ -49,6 +51,7 @@ describe("bloom filter", function() {
         falsePos++;
       }
     }
+    console.log(falsePos/sample);
     assert.isTrue(falsePos/sample < 0.1);
   });
 });

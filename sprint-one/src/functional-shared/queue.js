@@ -10,7 +10,7 @@ var queueMethods = {};
 
 queueMethods.enqueue = function(value){
   for (var i = this.len; i > 0; i--){
-    this.storage[this.len]=this.storage[this.len-1];
+    this.storage[this.len] = this.storage[this.len - 1];
   }
   this.storage[0] = value;
   this.len++;
