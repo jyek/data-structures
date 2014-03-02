@@ -56,27 +56,57 @@ PrefixTree.prototype.addWord = function(word){
   }
 }
 
-PrefixTree.prototype.dictionary = function(prefix, callback){
+PrefixTree.prototype.dictionary = function(prefix, result){
+  result = result || [];
   prefix = prefix || '';
   prefix += this.value;
   for (key in this.children){
     if (this.children[key] !== undefined){
       var tree = this.children[key];
-      tree.dictionary(prefix, callback);
+      tree.dictionary(prefix, result);
       if (tree.end) {
-        console.log(prefix + tree.value);
+        result.push(prefix + tree.value);
       }
     }
   }
+  return result;
 }
 
-PrefixTree.prototype.autocomplete = function(word, tree){
-  var c = word[0];
-  var next = word.substr(1);
-  var tree = this.children[c.charCodeAt()];
-  if (next === ''){
-    tree.dictionary();
-  } else {
-    tree.autocomplete(next, tree);
+PrefixTree.prototype.autocomplete = function(word){
+  var i = 0;
+  var tree = this;
+  var result = [];
+  // get to the node w-o-r-d
+  while (i < word.length){
+    c = word[i].charCodeAt();
+    if (tree.children[c] !== undefined){
+      tree = tree.children[c];
+    } else {
+      return [];
+    }
+    i++;
   }
+  // get words from dictionary
+  var partial = tree.dictionary( word.substr(0,word.length-1) );
+  result = result.concat(partial);
+  if (tree.end){
+    // if word specified is in dictionary, include in results
+    result.push(word);
+  }
+  return result;
+}
+
+PrefixTree.prototype.autocompleteT9 = function(input){
+  var map = [
+    ' ',      // 0
+    ,         // 1
+    'abc',    // 2
+    'def',    // 3
+    'ghi',    // 4
+    'jkl',    // 5
+    'mno',    // 6
+    'pqrs',   // 7
+    'tuv',    // 8
+    'wxyz',   // 9
+  ]
 }
