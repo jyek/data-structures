@@ -49,4 +49,17 @@ describe("prefixTree", function() {
     assert.isTrue(result.indexOf('battle') !== -1);
     assert.isTrue(result.indexOf('battleship') !== -1);
   });
+
+  it("autocomplete should take array of prefixes as input", function() {
+    trie.add(['butcher','blue','bat','blood','brat','battered','battle','battleship']);
+    var prefixes = ['bat','bl'];
+    var result = trie.autocomplete(prefixes);
+    console.log(result);
+    assert.isTrue(result.indexOf('bat') !== -1);
+    assert.isTrue(result.indexOf('battered') !== -1);
+    assert.isTrue(result.indexOf('battle') !== -1);
+    assert.isTrue(result.indexOf('battleship') !== -1);
+    assert.isTrue(result.indexOf('blood') !== -1);
+    assert.isTrue(result.indexOf('blue') !== -1);
+  });
 });

@@ -72,27 +72,41 @@ PrefixTree.prototype.dictionary = function(prefix, result){
   return result;
 }
 
-PrefixTree.prototype.autocomplete = function(word){
-  var i = 0;
-  var tree = this;
+PrefixTree.prototype.autocomplete = function(prefix){
   var result = [];
-  // get to the node w-o-r-d
-  while (i < word.length){
-    c = word[i].charCodeAt();
-    if (tree.children[c] !== undefined){
-      tree = tree.children[c];
-    } else {
-      return [];
+
+  var complete = function(word, tree){
+    var i = 0;
+    // get to the node w-o-r-d
+    while (i < word.length){
+      c = word[i].charCodeAt();
+      if (tree.children[c] !== undefined){
+        tree = tree.children[c];
+      } else {
+        return [];
+      }
+      i++;
     }
-    i++;
+    // get words from dictionary and adds to result
+    var partial = tree.dictionary( word.substr(0,word.length-1) );
+    result = result.concat(partial);
+    // if word is a word itself, include in results
+    if (tree.end){
+      result.push(word);
+    }
   }
-  // get words from dictionary
-  var partial = tree.dictionary( word.substr(0,word.length-1) );
-  result = result.concat(partial);
-  if (tree.end){
-    // if word specified is in dictionary, include in results
-    result.push(word);
+
+  if ( Array.isArray(prefix) ){
+    // handles array of words (for T9 autocomplete)
+    for (var j = 0; j < prefix.length; j++){
+      tree = this;
+      complete(prefix[j], this);
+    }
+  } else {
+    // handles individual word
+    complete(prefix, this);
   }
+
   return result;
 }
 
