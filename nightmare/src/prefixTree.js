@@ -1,7 +1,7 @@
 var PrefixTree = function (val){
   this.value = val || '';
   this.end = false;
-  this.children = [];
+  this.children = {};
 }
 
 // check if tree contains property
@@ -56,13 +56,13 @@ PrefixTree.prototype.addWord = function(word){
   }
 }
 
-PrefixTree.prototype.dictionary = function(prefix){
+PrefixTree.prototype.dictionary = function(prefix, callback){
   prefix = prefix || '';
   prefix += this.value;
-  for (var i = 0; i < this.children.length; i++){
-    if (this.children[i] !== undefined){
-      var tree = this.children[i];
-      tree.dictionary(prefix);
+  for (key in this.children){
+    if (this.children[key] !== undefined){
+      var tree = this.children[key];
+      tree.dictionary(prefix, callback);
       if (tree.end) {
         console.log(prefix + tree.value);
       }
