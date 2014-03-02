@@ -56,6 +56,8 @@ PrefixTree.prototype.addWord = function(word){
   }
 }
 
+
+// Returns paths in tree prepended by prefix
 PrefixTree.prototype.dictionary = function(prefix, result){
   result = result || [];
   prefix = prefix || '';
@@ -72,6 +74,7 @@ PrefixTree.prototype.dictionary = function(prefix, result){
   return result;
 }
 
+//Takes prefix or array of prefixes and returns words in dictionary
 PrefixTree.prototype.autocomplete = function(prefix){
   var result = [];
 
@@ -110,7 +113,11 @@ PrefixTree.prototype.autocomplete = function(prefix){
   return result;
 }
 
-PrefixTree.prototype.autocompleteT9 = function(input){
+
+// Accepts digits and returns autocompleted words
+// TODO: Does not work on spaces
+PrefixTree.prototype.autocompleteT9 = function(digits){
+  // helper that maps digits to letters
   var map = [
     ' ',      // 0
     ,         // 1
@@ -123,4 +130,37 @@ PrefixTree.prototype.autocompleteT9 = function(input){
     'tuv',    // 8
     'wxyz',   // 9
   ]
+
+  // helper that transforms digits into array of letters for permutation
+  var mapDigits = function(digits){
+    var digitArr = digits.split('');
+    var output = [];
+    for (var i = 0; i < digitArr.length; i++){
+      var d = digitArr[i];
+      output.push(map[d]);
+    }
+    return output;
+  }
+
+  // helper that creates an array of possible prefixes
+  var prefixes = [];
+  var permutate = function(arr, idx, prefix){
+    var idx = idx || 0;
+    var prefix = prefix || '';
+    var nextCharArr = arr[idx];
+
+    if (idx === arr.length){
+      prefixes.push(prefix);
+    } else {
+      for (var i = 0; i < nextCharArr.length; i++){
+        var index = idx + 1;
+        permutate(arr, index, prefix + nextCharArr[i])
+      }
+    }
+  }
+
+  // core routine
+  input = mapDigits(digits);
+  permutate(input);
+  return this.autocomplete(prefixes);
 }

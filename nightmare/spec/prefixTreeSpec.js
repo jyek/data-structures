@@ -8,10 +8,12 @@ describe("prefixTree", function() {
     trie = new PrefixTree('');
   });
 
-  it("should have methods named 'contains', 'add', 'dictionary' and 'autocomplete'", function() {
+  it("should have methods named 'contains', 'add', 'dictionary', 'autocomplete' and 'autocompleteT9'", function() {
     expect(trie.add).to.be.a('function');
     expect(trie.contains).to.be.a('function');
     expect(trie.dictionary).to.be.a('function');
+    expect(trie.autocomplete).to.be.a('function');
+    expect(trie.autocompleteT9).to.be.a('function');
   });
 
   it("should be able to add individual words", function() {
@@ -54,12 +56,20 @@ describe("prefixTree", function() {
     trie.add(['butcher','blue','bat','blood','brat','battered','battle','battleship']);
     var prefixes = ['bat','bl'];
     var result = trie.autocomplete(prefixes);
-    console.log(result);
     assert.isTrue(result.indexOf('bat') !== -1);
     assert.isTrue(result.indexOf('battered') !== -1);
     assert.isTrue(result.indexOf('battle') !== -1);
     assert.isTrue(result.indexOf('battleship') !== -1);
     assert.isTrue(result.indexOf('blood') !== -1);
     assert.isTrue(result.indexOf('blue') !== -1);
+  });
+
+  it("should take digits as prefix for T9autocomplete", function() {
+    trie.add(['butcher','blue','bat','blood','brat','battered','battle','battleship']);
+    var result = trie.autocompleteT9('228');
+    assert.isTrue(result.indexOf('bat') !== -1);
+    assert.isTrue(result.indexOf('battered') !== -1);
+    assert.isTrue(result.indexOf('battle') !== -1);
+    assert.isTrue(result.indexOf('battleship') !== -1);
   });
 });
