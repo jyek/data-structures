@@ -3,7 +3,7 @@ var makeBinarySearchTree = function(value){
   newTree.value = value;
   newTree.left = null;
   newTree.right = null;
-  _.extend(newTree,binaryTreeMethods);
+  _.extend(newTree, binaryTreeMethods);
   return newTree;
 };
 
@@ -46,8 +46,19 @@ binaryTreeMethods.depthFirstLog = function(callback){
   callback(this.value);
   this.left !== null && this.left.depthFirstLog(callback);
   this.right !== null && this.right.depthFirstLog(callback);
-}
+};
 
-binaryTreeMethods.breadthFirstLog = function(callback){
-
-}
+binaryTreeMethods.breadthFirstLog = function(callback, tree, queue){
+  var queue = queue || [];
+  tree = tree || this;
+  callback(tree.value);
+  if (tree.left !== null){
+    queue.push(tree.left);;
+  }
+  if (tree.right !== null){
+    queue.push(tree.right);
+  }
+  if (queue.length > 0){
+    this.breadthFirstLog(callback, queue.shift(), queue);
+  }
+};

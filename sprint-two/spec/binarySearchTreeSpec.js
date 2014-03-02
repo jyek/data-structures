@@ -40,8 +40,31 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(10);
     binarySearchTree.insert(12);
     binarySearchTree.depthFirstLog(func);
+<<<<<<< HEAD
     expect(array.length).to.equal([5,2,3,9,7,10,12].length);
     assert.notStrictEqual(array, [5,2,3,9,7,10,12]);
+    console.log(array);
+=======
+    // console.log(array);
+    expect(array.length).to.equal(expectedArr.length);
+    for (var i = 0; i < array.length; i++){
+      expect(array[i]).to.equal(expectedArr[i]);
+    }
+>>>>>>> 57a08e40a2aa9b047c6fca79fa763c340ddeac88
+  });
+
+  it("should execute a callback on every value in a tree using 'breadthFirstLog'", function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(9);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(12);
+    expectedArr = [5,2,3,9,7,10,12];
+    binarySearchTree.breadthFirstLog(func);
+    console.log('BFS');
     console.log(array);
   });
 });
