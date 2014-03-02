@@ -8,9 +8,10 @@ describe("tree", function() {
     tree = makeTree();
   });
 
-  it("should have methods named 'addChild' and 'contains', and a property named 'value'", function() {
+  it("should have methods named 'addChild', 'contains', 'traverse', and a property named 'value'", function() {
     expect(tree.addChild).to.be.a('function');
     expect(tree.contains).to.be.a('function');
+    expect(tree.traverse).to.be.a('function');
     assert.isTrue('value' in tree);
   });
 
@@ -54,4 +55,20 @@ describe("tree", function() {
     assert.isFalse(tree.contains(5));
   });
 
+  it("should traverse the tree", function(){
+    arr = [];
+    var fn = function(val){ arr.push(val); };
+    tree.addChild(1);
+    tree.addChild(2);
+    tree.addChild(3);
+    tree.children[0].addChild(4);
+    tree.children[0].addChild(5);
+    tree.children[1].addChild(6);
+    tree.children[0].children[0].addChild(7);
+    tree.traverse(fn);
+    expectedArr = [undefined,1,2,3,4,5,6,7];
+    console.log(arr);
+    assert.isTrue(arr.length === expectedArr.length);
+    assert.notStrictEqual(arr, expectedArr);
+  });
 });

@@ -31,7 +31,7 @@ treeMethods.contains = function(target, tree){
   if (tree.value === target){
     return true;
   } else {
-    for (var i=0; i<tree.children.length; i++){
+    for (var i = 0; i < tree.children.length; i++){
       result = this.contains(target, tree.children[i]);
       if (result){
         return true;
@@ -40,3 +40,13 @@ treeMethods.contains = function(target, tree){
   }
   return false;
 };
+
+treeMethods.traverse = function(callback, tree){
+  tree = tree || this;
+  callback(tree.value);
+  if (tree.children.length > 0){
+    for (var i = 0; i < tree.children.length; i++){
+      tree.traverse(callback, tree.children[i]);
+    }
+  }
+}
