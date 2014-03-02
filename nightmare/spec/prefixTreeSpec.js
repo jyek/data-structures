@@ -25,6 +25,12 @@ it("should contain words that are added to dictionary", function() {
     assert.isFalse(trie.contains('notinthere'));
   });
 
+  it("should have a functioning dictionary", function() {
+    trie.add('reactor');
+    trie.add('hack');
+    console.log(trie.dictionary());
+  });
+
   it("should also take array as input for add", function() {
     trie.add(['this','couch','is','blue']);
     assert.isTrue(trie.contains('this'));
@@ -33,9 +39,9 @@ it("should contain words that are added to dictionary", function() {
     assert.isTrue(trie.contains('blue'));
   });
 
-  it("should have an autocomplete function", function() {
+  it("should have an autocomplete function that takes the first part of a word and completes it", function() {
     trie.add(['butcher','blue','bat','blood','brat','battered','battle','battleship']);
-    trie.autocomplete('bat');
+    console.log(trie.dictionary());
+    console.log(trie.autocomplete('bat'));
   });
-
 });

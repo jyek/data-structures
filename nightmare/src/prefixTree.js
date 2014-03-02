@@ -70,13 +70,13 @@ PrefixTree.prototype.dictionary = function(prefix){
   }
 }
 
-PrefixTree.prototype.autocomplete = function(word){
+PrefixTree.prototype.autocomplete = function(word, tree){
   var c = word[0];
   var next = word.substr(1);
   var tree = this.children[c.charCodeAt()];
   if (next === ''){
     tree.dictionary();
   } else {
-    tree.goTo(next);
+    tree.autocomplete(next, tree);
   }
 }
