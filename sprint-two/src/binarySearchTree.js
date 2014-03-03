@@ -3,6 +3,7 @@ var makeBinarySearchTree = function(value){
   newTree.value = value;
   newTree.left = null;
   newTree.right = null;
+  newTree.depth = 0;
   _.extend(newTree, binaryTreeMethods);
   return newTree;
 };
@@ -14,12 +15,14 @@ binaryTreeMethods.insert = function(value, tree){
   if (value > tree.value){
     if (tree.right === null){
       tree.right = new makeBinarySearchTree(value);
+      tree.right.depth = tree.depth + 1;
     } else {
       tree.insert(value, tree.right);
     }
   } else {
     if (tree.left === null) {
       tree.left = new makeBinarySearchTree(value);
+      tree.left.depth = tree.depth + 1;
     } else {
       tree.insert(value, tree.left);
     }
@@ -83,7 +86,6 @@ binaryTreeMethods.makeBalancedTree = function(nodes, start, end, firstNode){
       } else {
         this.insert(nodes[i]);
       }
-      // console.log(nodes[i]);
     }
   }
   if (end - start >= 2){
@@ -93,7 +95,6 @@ binaryTreeMethods.makeBalancedTree = function(nodes, start, end, firstNode){
     } else {
       this.insert(nodes[i]);
     }
-    // console.log(nodes[i]);
     this.makeBalancedTree(nodes, start, i - 1, false);
     this.makeBalancedTree(nodes, i + 1, end, false);
   }
