@@ -18,6 +18,7 @@ binaryTreeMethods.insert = function(value, tree){
       tree.right.depth = tree.depth + 1;
     } else {
       tree.insert(value, tree.right);
+
     }
   } else {
     if (tree.left === null) {
@@ -46,7 +47,7 @@ binaryTreeMethods.contains = function(target){
 };
 
 binaryTreeMethods.depthFirstLog = function(callback){
-  callback(this.value);
+  callback(this);
   this.left !== null && this.left.depthFirstLog(callback);
   this.right !== null && this.right.depthFirstLog(callback);
 };
@@ -55,7 +56,7 @@ binaryTreeMethods.breadthFirstLog = function(callback, tree, queue, indicateBlan
   var queue = queue || [];
   var indicateBlanks = indicateBlanks || false;
   tree = tree || this;
-  callback(tree.value);
+  callback(tree);
   if (tree.left !== null){
     queue.push(tree.left);;
   }
@@ -69,7 +70,7 @@ binaryTreeMethods.breadthFirstLog = function(callback, tree, queue, indicateBlan
 
 binaryTreeMethods.inOrderTraverse = function(callback){
   this.left !== null && this.left.inOrderTraverse(callback);
-  callback(this.value);
+  callback(this);
   this.right !== null && this.right.inOrderTraverse(callback);
 }
 
@@ -100,17 +101,44 @@ binaryTreeMethods.makeBalancedTree = function(nodes, start, end, firstNode){
   }
 }
 
+// returns true if tree needs to be rebalanced
+binaryTreeMethods.needsRebalancing = function(){
+  var heights = []
+  var factor = 2;
+  var getHeights = function(tree){
+    if (heights[tree.depth] === undefined){
+      heights[tree.depth] = 1;
+    } else {
+      heights[tree.depth]++;
+    }
+  }
+  this.depthFirstLog(getHeights);
+
+  var maxHeight = heights.length;
+  var minHeight;
+  for (var i = 0; i < heights.length; i++){
+    if (heights[i] < i * factor){
+      minHeight = i;
+      break;
+    }
+  }
+  return maxHeight > minHeight * factor;
+}
+
 binaryTreeMethods.rebalance = function(tree){
   // helper to insert elements on in-order traversal
   nodes = [];
-  var insert = function(val){
-    nodes.push(val);
+  var insert = function(tree){
+    nodes.push(tree.value);
   }
 
   // O(n)
-  this.inOrderTraverse(insert);
-  // O(constant)
-  this.empty();
-  // O(n)
-  this.makeBalancedTree(nodes, 0, nodes.length-1, true);
+  if ( this.needsRebalancing() ){
+    // O(n)
+    this.inOrderTraverse(insert);
+    // O(constant)
+    this.empty();
+    // O(n)
+    this.makeBalancedTree(nodes, 0, nodes.length-1, true);
+  }
 }
