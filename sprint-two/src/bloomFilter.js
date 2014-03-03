@@ -5,21 +5,28 @@ var BloomFilter = function(m, k){
 	this._storage = makeLimitedArray(this._m);
 };
 
+// Adds key to hash table
 BloomFilter.prototype.add = function(v) {
-	for (var i = 0; i < this._k.length; i++){
-		this._storage[this.hash[i](v)] = true;
+  for (var i = 0; i < this._k; i++){
+    var key = this.hash[i](v, this._m);
+		this._storage.set(key, true);
 	}
 	this._count++;
 }
 
+// Checks if bloom filter contains key
 BloomFilter.prototype.contains = function(v) {
 	var allTrue = true;
-	for (var i = 0; i < this._k.length; i++){
-		this._storage[this.hash[i](v)] === false && allTrue = false;
+	for (var i = 0; i < this._k; i++){
+    var k = this.hash[i](v, this._m);
+		if( this._storage.get(k) !== true){
+      allTrue = false;
+    }
 	}
 	return allTrue;
 }
 
+// Returns number of keys
 BloomFilter.prototype.count = function(){
 	return this._count;
 }
@@ -71,7 +78,7 @@ BloomFilter.prototype.hash[1] = function (v, m) {
   return a & 0xffffffff % m;
 }
 
-// One additional iteration of FNV, given a hash
+// One additional iteration of FNV hashing
 BloomFilter.prototype.hash[2] = function (v, m) {
   var n = v.length,
       a = 2166136261,
@@ -95,13 +102,6 @@ BloomFilter.prototype.hash[2] = function (v, m) {
     a ^= c & 0xff;
     a += (a << 1) + (a << 4) + (a << 7) + (a << 8) + (a << 24);
   }
-  // From http://home.comcast.net/~bretm/hash/6.html
-  a += a << 13;
-  a ^= a >> 7;
-  a += a << 3;
-  a ^= a >> 17;
-  a += a << 5;
-	
 	// One additional iteration
   a += (a << 1) + (a << 4) + (a << 7) + (a << 8) + (a << 24);
   a += a << 13;
