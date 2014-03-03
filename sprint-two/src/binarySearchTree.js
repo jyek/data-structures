@@ -48,8 +48,9 @@ binaryTreeMethods.depthFirstLog = function(callback){
   this.right !== null && this.right.depthFirstLog(callback);
 };
 
-binaryTreeMethods.breadthFirstLog = function(callback, tree, queue){
+binaryTreeMethods.breadthFirstLog = function(callback, tree, queue, indicateBlanks){
   var queue = queue || [];
+  var indicateBlanks = indicateBlanks || false;
   tree = tree || this;
   callback(tree.value);
   if (tree.left !== null){
@@ -62,3 +63,53 @@ binaryTreeMethods.breadthFirstLog = function(callback, tree, queue){
     this.breadthFirstLog(callback, queue.shift(), queue);
   }
 };
+
+binaryTreeMethods.inOrderTraverse = function(callback){
+  this.left !== null && this.left.inOrderTraverse(callback);
+  callback(this.value);
+  this.right !== null && this.right.inOrderTraverse(callback);
+}
+
+binaryTreeMethods.empty = function(){
+  this.left = null;
+  this.right = null;
+}
+
+binaryTreeMethods.makeBalancedTree = function(nodes, start, end, firstNode){
+  if (end - start < 2){
+    for (var i = start; i <= end; i++){
+      if (firstNode){
+        this.value = nodes[i];
+      } else {
+        this.insert(nodes[i]);
+      }
+      // console.log(nodes[i]);
+    }
+  }
+  if (end - start >= 2){
+    i = Math.floor( (start + end)/2 );
+    if (firstNode){
+      this.value = nodes[i];
+    } else {
+      this.insert(nodes[i]);
+    }
+    // console.log(nodes[i]);
+    this.makeBalancedTree(nodes, start, i - 1, false);
+    this.makeBalancedTree(nodes, i + 1, end, false);
+  }
+}
+
+binaryTreeMethods.rebalance = function(tree){
+  // helper to insert elements on in-order traversal
+  nodes = [];
+  var insert = function(val){
+    nodes.push(val);
+  }
+
+  // O(n)
+  this.inOrderTraverse(insert);
+  // O(constant)
+  this.empty();
+  // O(n)
+  this.makeBalancedTree(nodes, 0, nodes.length-1, true);
+}

@@ -1,4 +1,4 @@
-var assert = chai.assert; 
+var assert = chai.assert;
 
 describe("binarySearchTree", function() {
   var binarySearchTree;
@@ -29,7 +29,7 @@ describe("binarySearchTree", function() {
     assert.isTrue(binarySearchTree.contains(7));
     assert.isFalse(binarySearchTree.contains(8));
   });
-  
+
   it("should execute a callback on every value in a tree using 'depthFirstLog'", function(){
     var array = [];
     var func = function(value){ array.push(value); }
@@ -40,17 +40,12 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(10);
     binarySearchTree.insert(12);
     binarySearchTree.depthFirstLog(func);
-<<<<<<< HEAD
-    expect(array.length).to.equal([5,2,3,9,7,10,12].length);
-    assert.notStrictEqual(array, [5,2,3,9,7,10,12]);
     console.log(array);
-=======
-    // console.log(array);
+    expectedArr = [5,2,3,9,7,10,12];
     expect(array.length).to.equal(expectedArr.length);
     for (var i = 0; i < array.length; i++){
       expect(array[i]).to.equal(expectedArr[i]);
     }
->>>>>>> 57a08e40a2aa9b047c6fca79fa763c340ddeac88
   });
 
   it("should execute a callback on every value in a tree using 'breadthFirstLog'", function(){
@@ -62,9 +57,28 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(7);
     binarySearchTree.insert(10);
     binarySearchTree.insert(12);
-    expectedArr = [5,2,3,9,7,10,12];
-    binarySearchTree.breadthFirstLog(func);
-    console.log('BFS');
+    expectedArr = [5,2,9,3,7,10,12];
+    binarySearchTree.breadthFirstLog(func,undefined,undefined,true);
     console.log(array);
+    for (var i = 0; i < array.length; i++){
+      expect(array[i]).to.equal(expectedArr[i]);
+    }
+  });
+
+  it("should rebalance when max depth / min depth > 2", function(){
+    binarySearchTree.insert(9);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(12);
+    binarySearchTree.rebalance();
+    expect(binarySearchTree.value).to.equal(7);
+    expect(binarySearchTree.left.value).to.equal(3);
+    expect(binarySearchTree.left.left.value).to.equal(2);
+    expect(binarySearchTree.left.right.value).to.equal(5);
+    expect(binarySearchTree.right.value).to.equal(10);
+    expect(binarySearchTree.right.left.value).to.equal(9);
+    expect(binarySearchTree.right.right.value).to.equal(12);
   });
 });
