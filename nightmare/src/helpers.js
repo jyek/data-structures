@@ -1,3 +1,30 @@
+// Limited array
+var makeLimitedArray = function(limit){
+  var storage = [];
+
+  var limitedArray = {};
+  limitedArray.get = function(index){
+    checkLimit(index);
+    return storage[index];
+  };
+  limitedArray.set = function(index, value){
+    checkLimit(index);
+    storage[index] = value;
+  };
+  limitedArray.each = function(callback){
+    for(var i = 0; i < storage.length; i++){
+      callback(storage[i], i, storage);
+    }
+  };
+
+  var checkLimit = function(index){
+    if(typeof index !== 'number'){ throw new Error('setter requires a numeric index for its first argument'); }
+    if(limit <= index){ throw new Error('Error trying to access an over-the-limit index'); }
+  };
+
+  return limitedArray;
+};
+
 var makeDblLinkedList = function(){
   var list = {};
   list.head = null;
@@ -26,6 +53,17 @@ var makeDblLinkedList = function(){
     }
     this.head = n;
   };
+
+  list.addSorted = function(value){
+    if (this.head === null){
+      this.addToTail(value);
+    } else {
+      var n = this.head;
+      if (value < n.value){
+        this.insert(value,this.head);
+      }
+    }
+  }
 
   list.removeHead = function(){
     if (this.head === null){

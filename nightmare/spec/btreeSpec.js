@@ -5,7 +5,9 @@ describe("B-Tree", function() {
   var btree;
 
   beforeEach(function() {
-    btree = new BTree();
+    btree = new BTree(2);
+    btree.add(10);
+    btree.print();
   });
 
   it("should contain add, contains, count and 3 hash methods as well as a storage array", function() {

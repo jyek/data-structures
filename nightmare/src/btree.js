@@ -1,23 +1,28 @@
-var BTree = function(node){
-  this.value = value;
-  this.children = [];
+// noOfNodes is the number of nodes on each tree (e.g. 2 for a 2-3 b-tree)
+var BTree = function(noOfNodes){
+  this.n = noOfNodes;
+  this._values = makeDblLinkedList(noOfNodes);
+  this._children = makeLimitedArray(noOfNodes + 1);
 };
 
-BTree.prototype.insert = function(value, tree){
-  tree = tree || this;
-  if (value > tree.value){
-    if (tree.right === null){
-      tree.right = new makeBinarySearchTree(value);
-    } else {
-      tree.insert(value, tree.right);
-    }
-  } else {
-    if (tree.left === null) {
-      tree.left = new makeBinarySearchTree(value);
-    } else {
-      tree.insert(value, tree.left);
-    }
-  }
+BTree.prototype.print = function(){
+  this._values.print();
+};
+
+BTree.prototype.insert = function(value){
+  // var findPosition = function(value, tree){
+  //   for (var i = 0; i < this._values.length; i++){
+  //     if (value < this._values.get(i)){
+
+  //     }
+  //   }
+  // }
+
+  // if (not full){
+  //   add value
+  // } else {
+  //   this._children[].insert(value);
+  // }
 };
 
 BTree.prototype.contains = function(target){

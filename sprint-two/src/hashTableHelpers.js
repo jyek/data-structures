@@ -13,6 +13,7 @@
 
 var makeLimitedArray = function(limit){
   var storage = [];
+  this.length = limit;
 
   var limitedArray = {};
   limitedArray.get = function(index){

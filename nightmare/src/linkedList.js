@@ -37,19 +37,6 @@ var makeLinkedList = function(){
     return testnode.value === target;
   };
 
-  // list.contains = function(target, node){
-  //   if (node === undefined){
-  //     node = list.head;
-  //   }
-  //   if (target === node.value) {
-  //     return true;
-  //   } else if (node === list.tail){
-  //     return false;
-  //   } else {
-  //     return list.contains(target,node.next);
-  //   }
-  // };
-
   return list;
 };
 
